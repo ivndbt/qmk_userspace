@@ -8,11 +8,12 @@ enum layers {
     _PLOVER,
     _LOWER,
     _RAISE,
+    _CONTROL,
     _QWERTY
 };
 
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
+#define LOWER TL_LOWR
+#define RAISE TL_UPPR
 #define QWERTY TG(_QWERTY)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -23,15 +24,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
 [_LOWER] = LAYOUT(
-    LOWER,    _______,  _______,  _______,  _______,  KC_DEL,   KC_ESC,   _______,  KC_UP,    _______,  KC_PGUP,  _______,
+    _______,  _______,  _______,  _______,  _______,  KC_DEL,   KC_ESC,   _______,  KC_UP,    _______,  KC_PGUP,  _______,
     _______,  _______,  _______,  _______,  _______,  _______,  KC_TAB,   KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_PGDN,  _______,
                                   _______,  _______,  _______,  KC_HOME,  KC_END,   _______
   ),
 
 [_RAISE] = LAYOUT(
-    _______,  _______,  _______,  _______,  _______,  QK_BOOT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,  _______,  QWERTY,
-    RAISE,    _______,  _______,  _______,  _______,  QK_RBT,   _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  KC_MUTE,  KC_VOLD,  KC_VOLU,  _______,  _______,  _______,
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_BRID,  KC_BRIU,  _______,  _______,  _______,
                                   _______,  _______,  _______,  KC_MPRV,  KC_MPLY,  KC_MNXT
+  ),
+
+[_CONTROL] = LAYOUT(
+    _______,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  QK_BOOT,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  QWERTY,
+    _______,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  QK_RBT,     XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+                                    XXXXXXX,  XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX
   ),
 
 [_QWERTY] = LAYOUT(
