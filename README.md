@@ -1,59 +1,33 @@
-# QMK Userspace
+# VIA's QMK Userspace Repository
 
-This is a template repository which allows for an external set of QMK keymaps to be defined and compiled. This is useful for users who want to maintain their own keymaps without having to fork the [main QMK repository](https://github.com/qmk/qmk_firmware). You must still fork the main QMK repository if writing firmware for a *new* keyboard.
+![android-chrome-192x192](https://user-images.githubusercontent.com/1714072/222621960-ddfb8ee6-a486-4c66-8852-b204ba7c807b.png)
 
-## Howto configure your build targets
+VIA is a powerful, open-source web-based interface for configuring your [QMK](https://qmk.fm)-powered mechanical keyboard. It allows you to customize your keymaps, create macros, and adjust RGB settings (if it has RGB) on the fly, without needing to recompile your keyboard's firmware. This makes keyboard customization easier and more accessible for everyone.
 
-1. Run the normal `qmk setup` procedure if you haven't already done so -- see [QMK Docs](https://docs.qmk.fm/#/newbs) for details.
-1. Fork this repository
-1. Clone your fork to your local machine
-1. Enable userspace in QMK config using `qmk config user.overlay_dir="$(realpath qmk_userspace)"`
-1. Add a new keymap for your board using `qmk new-keymap`
-    * This will create a new keymap in the `keyboards` directory, in the same location that would normally be used in the main QMK repository. For example, if you wanted to add a keymap for the Planck, it will be created in `keyboards/planck/keymaps/<your keymap name>`
-    * You can also create a new keymap using `qmk new-keymap -kb <your_keyboard> -km <your_keymap>`
-    * Alternatively, add your keymap manually by placing it in the location specified above.
-    * `layouts/<layout name>/<your keymap name>/keymap.*` is also supported if you prefer the layout system
-1. Add your keymap(s) to the build by running `qmk userspace-add -kb <your_keyboard> -km <your_keymap>`
-    * This will automatically update your `qmk.json` file
-    * Corresponding `qmk userspace-remove -kb <your_keyboard> -km <your_keymap>` will delete it
-    * Listing the build targets can be done with `qmk userspace-list`
-1. Commit your changes
+## Getting VIA to support your keyboard
 
-## Howto build with GitHub
+Are you a keyboard maker or a developer interested in adding support for your keyboard? We welcome contributions to the VIA project!
 
-1. In the GitHub Actions tab, enable workflows
-1. Push your changes above to your forked GitHub repository
-1. Look at the GitHub Actions for a new actions run
-1. Wait for the actions run to complete
-1. Inspect the Releases tab on your repository for the latest firmware build
+1. The source code of the keyboard **MUST be merged** in [QMK Firmware Repositories](https://github.com/qmk/qmk_firmware) Master branch.
+2. Your `keymaps/via` keymap **MUST be merged** in [VIA's QMK Userspace Repository](https://github.com/the-via/qmk_userspace_via) Main branch.
+3. Create a definition in JSON format for your keyboard and submit it as a pull request to [VIA's Keyboards Repository](https://github.com/the-via/keyboards) Master branch.
 
-## Howto build locally
+Please follow our [Specification documentation](https://www.caniusevia.com/docs/specification) carefully to ensure your pull request is smoothly reviewed and merged.
 
-1. Run the normal `qmk setup` procedure if you haven't already done so -- see [QMK Docs](https://docs.qmk.fm/#/newbs) for details.
-1. Fork this repository
-1. Clone your fork to your local machine
-1. `cd` into this repository's clone directory
-1. Set global userspace path: `qmk config user.overlay_dir="$(realpath .)"` -- you MUST be located in the cloned userspace location for this to work correctly
-    * This will be automatically detected if you've `cd`ed into your userspace repository, but the above makes your userspace available regardless of your shell location.
-1. Compile normally: `qmk compile -kb your_keyboard -km your_keymap` or `make your_keyboard:your_keymap`
+## What to add in this repository
 
-Alternatively, if you configured your build targets above, you can use `qmk userspace-compile` to build all of your userspace targets at once.
+1. Add a `vendor/keyboardname/keymaps/via` directory, inside the `keyboards` directory (e.g. `xelus/dawn60/keymaps/via`)
+2. Add a `rules.mk` file with `VIA_ENABLE = yes` in it--the `yes` needs to be in lowercase
+3. Add a `keymap.c` with full layout and sane default keycodes to it
 
-## Extra info
+In case multiple boards make use of the same code snippets, for things like Custom UI or other functions, it is highly encouraged the creation of a `common` folder (e.g. `vendor/common`).
 
-If you wish to point GitHub actions to a different repository, a different branch, or even a different keymap name, you can modify `.github/workflows/build_binaries.yml` to suit your needs.
+In this folder you will host all the common files and handler files that can then be imported by your keyboards.
 
-To override the `build` job, you can change the following parameters to use a different QMK repository or branch:
-```
-    with:
-      qmk_repo: qmk/qmk_firmware
-      qmk_ref: master
-```
+This is to reduce code duplication.
 
-If you wish to manually manage `qmk_firmware` using git within the userspace repository, you can add `qmk_firmware` as a submodule in the userspace directory instead. GitHub Actions will automatically use the submodule at the pinned revision if it exists, otherwise it will use the default latest revision of `qmk_firmware` from the main repository.
+## Facing Issues?
 
-This can also be used to control which fork is used, though only upstream `qmk_firmware` will have support for external userspace until other manufacturers update their forks.
+If you encounter any issues or bugs while using the [VIA Web Application](https://usevia.app), please report them by opening an issue in the [VIA Web Application Repository](https://github.com/the-via/app/issues). This will help us to track down and resolve problems, and improve the VIA experience for everyone.
 
-1. (First time only) `git submodule add https://github.com/qmk/qmk_firmware.git`
-1. (To update) `git submodule update --init --recursive`
-1. Commit your changes to your userspace repository
+Before reporting, please make sure to check if an issue has already been reported. Thank you!
